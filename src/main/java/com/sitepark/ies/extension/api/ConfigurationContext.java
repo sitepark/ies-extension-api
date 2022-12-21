@@ -11,7 +11,7 @@ public class ConfigurationContext {
 
 	private final List<Module> injectionModuleList = new ArrayList<>();
 
-	private ClassFinder classFinder = null;
+	private ClassFinder classFinder;
 
 	private final List<EventListener> servletContextEventListenerList = new ArrayList<>();
 
@@ -23,7 +23,7 @@ public class ConfigurationContext {
 	}
 
 	public List<EventListener> getServletContextEventListener() {
-		return this.servletContextEventListenerList;
+		return Collections.unmodifiableList(this.servletContextEventListenerList);
 	}
 
 	public void addInjectionModule(Module injectionModule) {
