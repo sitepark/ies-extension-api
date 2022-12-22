@@ -1,9 +1,3 @@
-# How to create
-
-## Buildin Extensions
-
-
-
 # How To Use
 
 IES extensions extend the functionality of the IES. With the help of an API these extensions can be implemented.
@@ -398,6 +392,15 @@ To keep access to the `ServletRequest` and the `ServletContext`, they can be eas
 
 ## GraphQL support
 
-The IES provides a GraphQL endpoint. Extensions can extend the schema and add resolvers for this endpoint. This functionality is provided by the extension `ies-graphql-extension` and can be used by other extensions.
+The IES provides a GraphQL endpoint. This is itself also implemented as an extension and can be extended via extensions.
 
-To learn how to extend the GraphQL schema please read [here](../ies-extensions/ies-graphql-extension/README.md).
+Extensions can extend the schema and add resolvers for this endpoint. This functionality is provided by the extension `ies-graphql-extension` and can be used by other extensions.
+
+To learn how to extend the GraphQL schema please read [here](https://github.com/sitepark/ies-graphql-extension-api#how-to-extend).
+
+
+# Examples
+
+There is a GitHub project with examples.
+
+https://github.com/sitepark/ies-extension-examples
