@@ -1,3 +1,5 @@
+[![codecov](https://codecov.io/gh/sitepark/ies-extension-api/branch/main/graph/badge.svg?token=68Mk5j1BY3)](https://codecov.io/gh/sitepark/ies-extension-api)
+[![Known Vulnerabilities](https://snyk.io/test/github/sitepark/ies-extension-api/badge.svg)](https://snyk.io/test/github/sitepark-com/ies-extension-api)
 # How To Use
 
 IES extensions extend the functionality of the IES. With the help of an API these extensions can be implemented.
