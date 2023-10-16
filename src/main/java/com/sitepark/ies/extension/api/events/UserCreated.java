@@ -23,7 +23,9 @@ public class UserCreated {
 		private Builder() { }
 
 		public Builder id(long id) {
-			assert id > 0;
+			if (id <= 0) {
+				throw new IllegalArgumentException("Id should be greater then 0");
+			}
 			this.id = id;
 			return this;
 		}
