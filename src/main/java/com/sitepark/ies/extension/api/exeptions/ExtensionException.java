@@ -2,11 +2,8 @@ package com.sitepark.ies.extension.api.exeptions;
 
 public abstract class ExtensionException extends RuntimeException {
 
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 3712489965941435766L;
 
-	public ExtensionException() {
-		super();
-	}
 	public ExtensionException(String message) {
 		super(message);
 	}
