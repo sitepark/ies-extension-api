@@ -4,16 +4,21 @@ import com.sitepark.ies.extension.api.Extension;
 
 public class InvalidExtensionClassException extends ExtensionException {
 
+	private static final long serialVersionUID = 6670400793703514354L;
+
 	private final Class<? extends Extension> extensionClass;
 
-	private static final long serialVersionUID = 1L;
-
-	public InvalidExtensionClassException(Class<? extends Extension> extensionClass, String message) {
+	public InvalidExtensionClassException(
+			Class<? extends Extension> extensionClass,
+			String message) {
 		super(message);
 		this.extensionClass = extensionClass;
 	}
 
-	public InvalidExtensionClassException(Class<? extends Extension> extensionClass, String message, Throwable t) {
+	public InvalidExtensionClassException(
+			Class<? extends Extension> extensionClass,
+			String message,
+			Throwable t) {
 		super(message, t);
 		this.extensionClass = extensionClass;
 	}
