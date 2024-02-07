@@ -7,10 +7,10 @@ import org.junit.jupiter.api.Test;
 
 class ExtensionTest {
 
-	@Test
-	void testDefaultDestroyMethod() {
-		Extension extension = spy(Extension.class);
-		extension.destroy();
-		verify(extension).destroy();
-	}
+  @Test
+  void testDefaultDestroyMethod() {
+    Extension extension = spy(Extension.class);
+    extension.destroy();
+    verify(extension).destroy();
+  }
 }

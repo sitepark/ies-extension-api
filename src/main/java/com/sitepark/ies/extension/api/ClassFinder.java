@@ -4,9 +4,9 @@ import java.util.List;
 
 public interface ClassFinder {
 
-	<T> List<Class<? extends T>> findBySubType(Class<T> type);
+  <T> List<Class<? extends T>> findBySubType(Class<T> type);
 
-	void initialize();
+  void initialize();
 
-	public void reset();
+  public void reset();
 }
