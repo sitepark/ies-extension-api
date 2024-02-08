@@ -9,25 +9,31 @@ import org.junit.jupiter.api.Test;
 
 class InitializationFailedExceptionTest {
 
-	@Test
-	void testWithMessage() {
-		InitializationFailedException e = assertThrows(
-				InitializationFailedException.class, () -> {
-						throw new InitializationFailedException("message");
-				}, "throw InitializationFailedException expected");
-		assertEquals("message", e.getMessage(), "unexpected message");
-		assertNull(e.getCause(), "cause should be null");
-	}
+  @Test
+  void testWithMessage() {
+    InitializationFailedException e =
+        assertThrows(
+            InitializationFailedException.class,
+            () -> {
+              throw new InitializationFailedException("message");
+            },
+            "throw InitializationFailedException expected");
+    assertEquals("message", e.getMessage(), "unexpected message");
+    assertNull(e.getCause(), "cause should be null");
+  }
 
-	@Test
-	void testWithMessageAndThrowable() {
-		Throwable t = mock();
-		InitializationFailedException e = assertThrows(
-				InitializationFailedException.class, () -> {
-						throw new InitializationFailedException("message", t);
-				}, "throw InitializationFailedException expected");
+  @Test
+  void testWithMessageAndThrowable() {
+    Throwable t = mock();
+    InitializationFailedException e =
+        assertThrows(
+            InitializationFailedException.class,
+            () -> {
+              throw new InitializationFailedException("message", t);
+            },
+            "throw InitializationFailedException expected");
 
-		assertEquals("message", e.getMessage(), "unexpected message");
-		assertEquals(t, e.getCause(), "unexpected cause");
-	}
+    assertEquals("message", e.getMessage(), "unexpected message");
+    assertEquals(t, e.getCause(), "unexpected cause");
+  }
 }

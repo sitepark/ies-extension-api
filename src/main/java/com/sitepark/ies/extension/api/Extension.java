@@ -12,22 +12,22 @@ package com.sitepark.ies.extension.api;
  */
 public interface Extension {
 
-	/**
-	 * Initialize the Extension.
-	 * - event handlers can be registered
-	 * - start Background processes
-	 * - ...
-	 */
-	void initialize();
+  /**
+   * Initialize the Extension.
+   * - event handlers can be registered
+   * - start Background processes
+   * - ...
+   */
+  void initialize();
 
-	/**
-	 * Can contains cleanup code
-	 *
-	 *  - unregistered event handlers
-	 *  - stop Background processes
-	 *  - ...
-	 */
-	default void destroy() {
-		// there is nothing to do in the standard case
-	}
+  /**
+   * Can contains cleanup code
+   *
+   *  - unregistered event handlers
+   *  - stop Background processes
+   *  - ...
+   */
+  default void destroy() {
+    // there is nothing to do in the standard case
+  }
 }
