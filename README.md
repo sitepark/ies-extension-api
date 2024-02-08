@@ -16,7 +16,6 @@ Add the following Maven dependency to use the API.
 </dependency>
 ```
 
-
 The starting point of each extension is the interface `com.sitepark.ies.extension.api.Extension`.
 
 ```java
@@ -37,7 +36,6 @@ All extensions that implement this interface will be executed automatically. It 
 ## Use dependency-injection
 
 There are several services that can be used via the API. These are provided via port interfaces. You can access these services via dependency injection. All port interfaces that can be used via the API are contained in the package `com.sitepark.ies.extension.api.port`.
-
 
 For this purpose the constructor must be marked with the annotation `@javax.inject.Inject`.
 
@@ -108,7 +106,6 @@ public class MyExtension implements Extension {
 }
 ```
 
-
 ## Inject your own classes
 
 The extension class itself serves only as an entry point. In most cases it makes sense to outsource the logic of the extension into different classes. These classes should also be injected into the extension constructor.
@@ -146,6 +143,7 @@ public class MyService {
 	}
 }
 ```
+
 Use `MyService` in `MyExtension`
 
 ```java
@@ -244,7 +242,6 @@ Maven dependency:
 </dependency>
 ```
 
-
 For this purpose `MyBatisModule` is extended as an injection module and made known to the extension factory.
 
 ```java
@@ -262,6 +259,7 @@ public class MyBatisInjectionModule extends MyBatisModule {
 ```
 
 Mapper example:
+
 ```java
 import org.apache.ibatis.annotations.Delete;
 
@@ -353,7 +351,6 @@ public class MyServlet extends HttpServlet {
 
 Dependency-injection can also be used here. See also [here](https://github.com/google/guice/wiki/ServletModule#available-injections) for more information.
 
-
 With the `ServletModule` the servlets are configured.
 
 ```java
@@ -390,9 +387,6 @@ The servlet can then be accessed at the URL https://ies.domain.com/ies3/my.
 
 To keep access to the `ServletRequest` and the `ServletContext`, they can be easily injected.
 
-
-
-
 ## GraphQL support
 
 The IES provides a GraphQL endpoint. This is itself also implemented as an extension and can be extended via extensions.
@@ -400,7 +394,6 @@ The IES provides a GraphQL endpoint. This is itself also implemented as an exten
 Extensions can extend the schema and add resolvers for this endpoint. This functionality is provided by the extension `ies-graphql-extension` and can be used by other extensions.
 
 To learn how to extend the GraphQL schema please read [here](https://github.com/sitepark/ies-graphql-extension-api#how-to-extend).
-
 
 # Examples
 
