@@ -8,5 +8,5 @@ public interface ClassFinder {
 
   void initialize();
 
-  public void reset();
+  void reset();
 }
