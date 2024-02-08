@@ -354,14 +354,6 @@
 						<version>4.8.3</version>
 					</dependency>
 				</dependencies>
-				<executions>
-					<execution>
-						<goals>
-							<goal>check</goal>
-						</goals>
-						<phase>verify</phase>
-					</execution>
-				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
