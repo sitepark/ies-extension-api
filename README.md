@@ -11,7 +11,7 @@ Add the following Maven dependency to use the API.
 <dependency>
 	<groupId>com.sitepark.ies</groupId>
 	<artifactId>ies-extension-api</artifactId>
-	<version>1.0</version>
+	<version>1.0.0</version>
 	<scope>provided</scope>
 </dependency>
 ```
