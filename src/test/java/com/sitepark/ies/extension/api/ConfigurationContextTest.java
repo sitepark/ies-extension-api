@@ -4,7 +4,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 
 import com.google.inject.Module;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.EventListener;
 import org.junit.jupiter.api.Test;
 
@@ -18,7 +18,9 @@ class ConfigurationContextTest {
     ctx.addServletContextEventListener(listener);
 
     assertEquals(
-        Arrays.asList(listener), ctx.getServletContextEventListener(), "listener expected");
+        Collections.singletonList(listener),
+        ctx.getServletContextEventListener(),
+        "listener expected");
   }
 
   @Test
@@ -29,7 +31,9 @@ class ConfigurationContextTest {
     ctx.addInjectionModule(injectionModule);
 
     assertEquals(
-        Arrays.asList(injectionModule), ctx.getInjectionModuleList(), "injectionModule expected");
+        Collections.singletonList(injectionModule),
+        ctx.getInjectionModuleList(),
+        "injectionModule expected");
   }
 
   @Test

@@ -11,6 +11,7 @@ import org.junit.jupiter.api.Test;
 class InvalidExtensionClassExceptionTest {
 
   @Test
+  @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
   void testWithMessage() {
     Class<Extension> extensionClass = Extension.class;
     InvalidExtensionClassException e =
@@ -27,6 +28,7 @@ class InvalidExtensionClassExceptionTest {
   }
 
   @Test
+  @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
   void testWithMessageAndThrowable() {
     Class<Extension> extensionClass = Extension.class;
     Throwable t = mock();

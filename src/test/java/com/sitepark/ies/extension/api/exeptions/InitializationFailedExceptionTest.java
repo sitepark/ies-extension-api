@@ -8,7 +8,7 @@ import static org.mockito.Mockito.mock;
 import org.junit.jupiter.api.Test;
 
 class InitializationFailedExceptionTest {
-
+  @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
   @Test
   void testWithMessage() {
     InitializationFailedException e =
@@ -22,6 +22,7 @@ class InitializationFailedExceptionTest {
     assertNull(e.getCause(), "cause should be null");
   }
 
+  @SuppressWarnings("PMD.UnitTestContainsTooManyAsserts")
   @Test
   void testWithMessageAndThrowable() {
     Throwable t = mock();
