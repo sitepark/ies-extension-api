@@ -1,10 +1,11 @@
 package com.sitepark.ies.extension.api.exeptions;
 
 import com.sitepark.ies.extension.api.Extension;
+import java.io.Serial;
 
 public class InvalidExtensionClassException extends ExtensionException {
 
-  private static final long serialVersionUID = 6670400793703514354L;
+  @Serial private static final long serialVersionUID = 6670400793703514354L;
 
   private final Class<? extends Extension> extensionClass;
 

@@ -6,5 +6,5 @@ module com.sitepark.ies.extension.api {
   exports com.sitepark.ies.extension.api.port;
 
   requires transitive com.fasterxml.jackson.databind;
-  requires transitive com.google.guice;
+  requires com.google.guice;
 }

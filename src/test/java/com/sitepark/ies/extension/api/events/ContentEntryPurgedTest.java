@@ -17,10 +17,6 @@ class ContentEntryPurgedTest {
   @Test
   @SuppressFBWarnings("RV_EXCEPTION_NOT_THROWN")
   void testInvalidId() {
-    assertThrows(
-        IllegalArgumentException.class,
-        () -> {
-          ContentEntryPurged.builder().id(0);
-        });
+    assertThrows(IllegalArgumentException.class, () -> ContentEntryPurged.builder().id(0));
   }
 }
