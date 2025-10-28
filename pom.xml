@@ -93,7 +93,7 @@
 		<dependency>
 			<groupId>com.github.spotbugs</groupId>
 			<artifactId>spotbugs-annotations</artifactId>
-			<version>4.9.5</version>
+			<version>4.9.6</version>
 			<optional>true</optional>
 		</dependency>
 
@@ -300,7 +300,7 @@
 			<plugin>
 				<groupId>com.diffplug.spotless</groupId>
 				<artifactId>spotless-maven-plugin</artifactId>
-				<version>2.46.1</version>
+				<version>3.0.0</version>
 				<configuration>
 					<!-- define a language-specific format -->
 					<java>
