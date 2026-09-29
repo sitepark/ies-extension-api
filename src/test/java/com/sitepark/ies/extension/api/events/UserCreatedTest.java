@@ -3,7 +3,6 @@ package com.sitepark.ies.extension.api.events;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.junit.jupiter.api.Test;
 
 class UserCreatedTest {
@@ -15,7 +14,6 @@ class UserCreatedTest {
   }
 
   @Test
-  @SuppressFBWarnings("RV_EXCEPTION_NOT_THROWN")
   void testInvalidId() {
     assertThrows(IllegalArgumentException.class, () -> UserCreated.builder().id(0));
   }

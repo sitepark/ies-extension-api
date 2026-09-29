@@ -6,6 +6,7 @@ package com.sitepark.ies.extension.api;
  * #destroy()} method is called when the extension is terminated. If event handlers have been
  * registered, they must be unregistered here. Background processes must also be stopped here.
  */
+@SuppressWarnings("PMD.ImplicitFunctionalInterface")
 public interface Extension {
 
   /**
