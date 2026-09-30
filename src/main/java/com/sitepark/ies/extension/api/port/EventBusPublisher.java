@@ -1,5 +1,6 @@
 package com.sitepark.ies.extension.api.port;
 
+@SuppressWarnings("PMD.ImplicitFunctionalInterface")
 public interface EventBusPublisher {
 
   /**

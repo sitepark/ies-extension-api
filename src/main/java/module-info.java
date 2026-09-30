@@ -1,3 +1,6 @@
+import org.jspecify.annotations.NullMarked;
+
+@NullMarked
 module com.sitepark.ies.extension.api {
   exports com.sitepark.ies.extension.api;
   exports com.sitepark.ies.extension.api.exeptions;
@@ -5,6 +8,7 @@ module com.sitepark.ies.extension.api {
   exports com.sitepark.ies.extension.api.annotations;
   exports com.sitepark.ies.extension.api.port;
 
+  requires static org.jspecify;
   requires transitive com.fasterxml.jackson.databind;
   requires com.google.guice;
 }

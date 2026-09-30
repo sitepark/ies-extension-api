@@ -5,12 +5,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EventListener;
 import java.util.List;
+import org.jspecify.annotations.Nullable;
 
 public class ConfigurationContext {
 
   private final List<Module> injectionModuleList = new ArrayList<>();
 
-  private ClassFinder classFinder;
+  private @Nullable ClassFinder classFinder;
 
   private final List<EventListener> servletContextEventListenerList = new ArrayList<>();
 
@@ -36,7 +37,7 @@ public class ConfigurationContext {
     this.classFinder = classFinder;
   }
 
-  public ClassFinder getClassFinder() {
+  public @Nullable ClassFinder getClassFinder() {
     return this.classFinder;
   }
 }
