@@ -10,5 +10,4 @@ module com.sitepark.ies.extension.api {
 
   requires static org.jspecify;
   requires transitive com.fasterxml.jackson.databind;
-  requires com.google.guice;
 }

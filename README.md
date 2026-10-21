@@ -12,7 +12,7 @@ Add the following Maven dependency to use the API.
 <dependency>
 	<groupId>com.sitepark.ies</groupId>
 	<artifactId>ies-extension-api</artifactId>
-	<version>1.0.0</version>
+	<version>2.0.0</version>
 	<scope>provided</scope>
 </dependency>
 ```
@@ -45,10 +45,11 @@ There are several services that can be used via the API. These are provided via 
 services via dependency injection. All port interfaces that can be used via the API are contained in the package
 `com.sitepark.ies.extension.api.port`.
 
-For this purpose the constructor must be marked with the annotation `@javax.inject.Inject`.
+For this purpose the constructor must be marked with the annotation `@jakarta.inject.Inject`. The extension depends on
+`jakarta.inject` only; it does not depend on the dependency injection container of the IES.
 
 ```java
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import com.sitepark.ies.extension.api.Extension;
 
@@ -68,9 +69,9 @@ Maven dependency for `@Inject`
 ```xml
 
 <dependency>
-	<groupId>javax.inject</groupId>
-	<artifactId>javax.inject</artifactId>
-	<version>1</version>
+	<groupId>jakarta.inject</groupId>
+	<artifactId>jakarta.inject-api</artifactId>
+	<version>2.0.1</version>
 	<scope>provided</scope>
 </dependency>
 ```
@@ -89,7 +90,7 @@ It is important that registered handlers are unregistered via the `unregister()`
 the extension is terminated.
 
 ```java
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import com.sitepark.ies.extension.api.Extension;
 import com.sitepark.ies.extension.api.annotations.Subscribe;
@@ -131,7 +132,7 @@ The own classes can also be injected in the extension constructor. Also, the own
 to inject own or API classes.
 
 ```java
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import com.sitepark.ies.extension.api.annotations.Subscribe;
 import com.sitepark.ies.extension.api.events.ContentEntryPurged;
@@ -166,7 +167,7 @@ public class MyService {
 Use `MyService` in `MyExtension`
 
 ```java
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
 import com.sitepark.ies.extension.api.Extension;
 
@@ -191,67 +192,44 @@ public class MyExtension implements Extension {
 }
 ```
 
-## Advanced dependency-injection
+## Configure the injection
 
-The IES uses [Guice](https://github.com/google/guice/wiki) as the dependency injection framework.
+The IES creates the extension, the classes it injects and the classes the IES looks for itself (e.g. GraphQL resolvers).
+Further classes are configured in a static method of the extension class, annotated with
+`@com.sitepark.ies.extension.api.annotations.ConfigureFactory`. It takes the
+`com.sitepark.ies.extension.api.ConfigurationContext`, which is called before the extension object is created.
 
-Maven dependency:
-
-```xml
-
-<dependency>
-	<groupId>com.google.inject</groupId>
-	<artifactId>guice</artifactId>
-	<version>5.1.0</version>
-	<scope>provided</scope>
-</dependency>
-```
-
-The full functionality of the framework can also be used in the extension. For this purpose it is necessary to create
-a [Guice module](https://github.com/google/guice/wiki/GettingStarted#guice-modules). This module must be known before
-the extension object is created. Therefore, a static method is used here, with which Factory configurations can be set.
-The extensions are created via a factory, whose behavior can be controlled via the factory configuration.
-
-To set the created Guice module in the factory configuration, a static method is marked in the extension class with the
-annotation `@com.sitepark.ies.extension.api.annotations.ConfigureFactory`. The marked method must take an argument of
-the `com.sitepark.ies.extension.api.FactoryConfig` class. The `FactoryConfig` can be used to pass the Guice module using
-the `addInjectionModule()` method.
+| Method | Use |
+|---|---|
+| `register(Class<?>...)` | Classes that are created by the IES, e.g. services that are injected by their class |
+| `bind(Class<T>, Class<? extends T>)` | An injection of the type (usually an interface) gets an instance of the implementation |
+| `bindDefault(Class<T>, Class<? extends T>)` | As `bind`, unless an extension binds the type; for defaults a project can replace |
+| `addMappers(Class<?>...)` | MyBatis mapper interfaces of the extension, see [Database operations](#database-operations) |
 
 ```java
-import com.google.inject.AbstractModule;
-
-public class MyInjectionModule extends AbstractModule {
-    @Override
-    protected void initialize() {
-        // ...
-    }
-}
-```
-
-Set `MyInjectionModule` to `FactoryConfig`
-
-```java
-import com.sitepark.ies.extension.api.FactoryConfig;
+import com.sitepark.ies.extension.api.ConfigurationContext;
 import com.sitepark.ies.extension.api.Extension;
 import com.sitepark.ies.extension.api.annotations.ConfigureFactory;
 
 public class MyExtension implements Extension {
 
     @ConfigureFactory
-    public static void configureInjection(FactoryConfig config) {
-        config.addInjectionModule(new MyInjectionModule());
+    public static void configure(ConfigurationContext context) {
+        context
+            .bind(Geocoder.class, MyGeocoder.class)
+            .bindDefault(Salutation.class, DefaultSalutation.class);
     }
 }
 ```
+
+A binding replaces a default binding of the same type, also one of another extension. Two bindings of the same type are
+an error.
 
 `@ConfigureFactory` can only be used in classes that implement the `Extension` interface.
 
 ## Database operations
 
 The IES uses [MyBatis](https://mybatis.org/mybatis-3/), a SQL mapping framework. This can also be used in the
-extensions.
-
-MyBatis has a [Guice integration](http://mybatis.org/guice/getting-started.html) that can also be used for IES
 extensions.
 
 Maven dependency:
@@ -261,31 +239,9 @@ Maven dependency:
 <dependency>
 	<groupId>org.mybatis</groupId>
 	<artifactId>mybatis</artifactId>
-	<version>3.5.9</version>
+	<version>3.5.16</version>
 	<scope>provided</scope>
 </dependency>
-<dependency>
-<groupId>org.mybatis</groupId>
-<artifactId>mybatis-guice</artifactId>
-<version>3.17</version>
-<scope>provided</scope>
-</dependency>
-```
-
-For this purpose `MyBatisModule` is extended as an injection module and made known to the extension factory.
-
-```java
-import org.mybatis.guice.MyBatisModule;
-
-public class MyBatisInjectionModule extends MyBatisModule {
-    @Override
-    protected void initialize() {
-
-        // ...
-
-        addMapperClass(MyRepositoryMapper.class);
-    }
-}
 ```
 
 Mapper example:
@@ -300,125 +256,64 @@ public interface MyRepositoryMapper {
 }
 ```
 
-Set `MyBatisInjectionModule` to `FactoryConfig`
+The extension adds its mappers to the `ConfigurationContext`. The IES creates them on the database of the IES, through
+the class loader of the extension; their statements take part in the transactions of the IES.
 
 ```java
-import com.sitepark.ies.extension.api.FactoryConfig;
+import com.sitepark.ies.extension.api.ConfigurationContext;
 import com.sitepark.ies.extension.api.Extension;
 import com.sitepark.ies.extension.api.annotations.ConfigureFactory;
 
 public class MyExtension implements Extension {
 
     @ConfigureFactory
-    public static void configureInjection(FactoryConfig config) {
-        config.addInjectionModule(new MyBatisInjectionModule());
+    public static void configure(ConfigurationContext context) {
+        context
+            .bind(MyRepository.class, MyBatisRepository.class)
+            .addMappers(MyRepositoryMapper.class);
     }
 }
 ```
 
-`MyMapper` can now be injected.
+`MyRepositoryMapper` can now be injected.
 
 ```java
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
-public class MyRepository {
+public class MyBatisRepository implements MyRepository {
 
-    private final MyMapper mapper;
+    private final MyRepositoryMapper mapper;
 
     @Inject
-    protected MyRepository(MyMapper mapper) {
+    protected MyBatisRepository(MyRepositoryMapper mapper) {
         this.mapper = mapper;
     }
 
+    @Override
     public void delete(long id) {
         this.mapper.delete(id);
     }
 }
 ```
 
-## Servlet support
+## HTTP support
 
-Extensions can provide their own servlets. For this purpose, the IES uses
-the [Guice Servlet Extensions](https://github.com/google/guice/wiki/Servlets).
+Extensions provide HTTP endpoints through the GraphQL and the REST extension APIs (see below). Servlets of their own,
+which version 1 configured with Guice servlet modules, are no longer supported.
 
-Maven dependencies:
+## Migrating from 1.x
 
-```xml
+Version 2 no longer depends on [Guice](https://github.com/google/guice/wiki).
 
-<dependency>
-	<groupId>com.google.inject.extensions</groupId>
-	<artifactId>guice-servlet</artifactId>
-	<version>5.1.0</version>
-	<scope>provided</scope>
-</dependency>
-<dependency>
-<groupId>javax.servlet</groupId>
-<artifactId>javax.servlet-api</artifactId>
-<version>4.0.1</version>
-<scope>provided</scope>
-</dependency>
-```
-
-The extension provides the servlet. The extension itself does not have to be a webapplication.
-
-```java
-import java.io.IOException;
-
-import javax.inject.Singleton;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-@Singleton
-public class MyServlet extends HttpServlet {
-
-    @Override
-    public void doGet(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
-        resp.getWriter().print("my-servlet");
-    }
-}
-```
-
-Dependency-injection can also be used here. See
-also [here](https://github.com/google/guice/wiki/ServletModule#available-injections) for more information.
-
-With the `ServletModule` the servlets are configured.
-
-```java
-import com.google.inject.servlet.ServletModule;
-
-public class MyServletInjectionModule extends ServletModule {
-
-    @Override
-    protected void configureServlets() {
-        serve("/my").with(MyServlet.class);
-    }
-}
-```
-
-Now only the Injection module for the Factory has to be added.
-
-Set `MyServletInjectionModule` to `FactoryConfig`
-
-```java
-import com.sitepark.ies.extension.api.FactoryConfig;
-import com.sitepark.ies.extension.api.Extension;
-import com.sitepark.ies.extension.api.annotations.ConfigureFactory;
-
-public class MyExtension implements Extension {
-
-    @ConfigureFactory
-    public static void configureInjection(FactoryConfig config) {
-        config.addInjectionModule(new MyServletInjectionModule());
-    }
-}
-```
-
-The servlet can then be accessed at the URL https://ies.domain.com/ies3/my.
-
-To keep access to the `ServletRequest` and the `ServletContext`, they can be easily injected.
+| 1.x | 2.0 |
+|---|---|
+| `addInjectionModule(Module)` with `bind(A.class).to(B.class)` | `bind(A.class, B.class)` |
+| `OptionalBinder.setDefault()` / `setBinding()` | `bindDefault(A.class, B.class)` / `bind(A.class, B.class)` |
+| `bind(C.class)` | `register(C.class)` |
+| `MyBatisModule` with `addMapperClass(M.class)` | `addMappers(M.class)` |
+| `ServletModule` | GraphQL or REST extension API |
+| `getInjectionModuleList()`, `addServletContextEventListener()` | removed |
+| `javax.inject` | `jakarta.inject` |
 
 ## GraphQL support
 
