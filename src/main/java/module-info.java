@@ -9,5 +9,4 @@ module com.sitepark.ies.extension.api {
   exports com.sitepark.ies.extension.api.port;
 
   requires static org.jspecify;
-  requires transitive com.fasterxml.jackson.databind;
 }
